@@ -1,0 +1,12 @@
+public static class NullableExt
+    {
+        public static bool IsEmpty<T>(this T? source) where T : struct, IEquatable<T>
+        {
+            return !source.HasValue || source.Value.Equals(default(T));
+        }
+
+        public static bool IsNotEmpty<T>(this T? source) where T : struct, IEquatable<T>
+        {
+            return source.HasValue && !source.Value.Equals(default(T));
+        }
+    }

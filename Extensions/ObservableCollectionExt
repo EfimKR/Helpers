@@ -1,0 +1,80 @@
+public class ObservableCollectionExt<T> : ObservableCollection<T>
+    {
+        private bool isNotificationAboutChangedEnabled = true;
+
+        public ObservableCollectionEx()
+        {
+        }
+
+        public ObservableCollectionEx(List<T> l) : base(l)
+        {
+        }
+
+        public ObservableCollectionEx(IEnumerable<T> l) : base(l)
+        {
+        }
+        
+        public void InsertRange(IEnumerable<T> items)
+        {
+            if (items == null)
+                throw new ArgumentNullException();
+
+            this.isNotificationAboutChangedEnabled = false;
+
+            foreach (T item in items)
+            {
+                this.Add(item);
+            }
+
+            this.isNotificationAboutChangedEnabled = true;
+            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        public void InsertRange(IEnumerable<T> items, int index)
+        {
+            if (items == null)
+                throw new ArgumentNullException();
+
+            this.isNotificationAboutChangedEnabled = false;
+
+            foreach (T item in items)
+            {
+                this.Items.Insert(index, item);
+            }
+
+            this.isNotificationAboutChangedEnabled = true;
+
+            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        public void AddOrUpdateValuesList(IEnumerable<T> items, Func<T, T, bool> indexSelector)
+        {
+            if (items == null || indexSelector == null)
+                throw new ArgumentNullException();
+
+            this.isNotificationAboutChangedEnabled = false;
+
+            foreach (T item in items)
+            {
+                var index = this.FindIndex(item, indexSelector);
+
+                if (index == -1)
+                {
+                    this.Add(item);
+                }
+                else
+                {
+                    this[index] = item;
+                }
+            }
+
+            this.isNotificationAboutChangedEnabled = true;
+            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+        
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (this.isNotificationAboutChangedEnabled) 
+                base.OnCollectionChanged(e);
+        }
+    }

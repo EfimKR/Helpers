@@ -1,0 +1,44 @@
+public static class StringExt
+    {
+        public static string SplitByUppercase(this string str)
+        {
+            var output = new StringBuilder();
+
+            foreach (char letter in str)
+            {
+                if (char.IsUpper(letter) && output.Length > 0)
+                {
+                    output.Append(" ");
+                }
+
+                output.Append(letter);
+            }
+
+            return output.ToString();
+        }
+
+        public static bool IsOrdinalEquals(this string value, string other)
+        {
+            return string.CompareOrdinal(value, other) == 0;
+        }
+
+        public static bool IsOrdinalEqualsIgnoreCase(this string value, string other)
+        {
+            return string.Compare(value, other, StringComparison.OrdinalIgnoreCase) == 0;
+        }
+
+        public static bool ContainsOrdinalIgnoreCase(this string value, string substring)
+        {
+            return value.IndexOf(substring, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        public static bool StartsWithOrdinalIgnoreCase(this string value, string substring)
+        {
+            return value.StartsWith(substring, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool EndsWithOrdinalIgnoreCase(this string value, string substring)
+        {
+            return value.EndsWith(substring, StringComparison.OrdinalIgnoreCase);
+        }
+    }

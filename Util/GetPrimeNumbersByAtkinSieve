@@ -18,7 +18,7 @@ public static List<long> GetPrimeNumbersByAtkinSieve(long limit)
                         isPrimes[n] ^= true;
 
                     n -= 2 * y2;
-                    if (x > y && n <= limit && n % 12 == 1)
+                    if (x > y && n <= limit && n % 12 == 11)
                         isPrimes[n] ^= true;
                 }
 

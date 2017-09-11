@@ -1,0 +1,42 @@
+public static List<ulong> GetPrimeNumbersByAtkinSieve(ulong limit)
+        {
+            var isPrimes = new bool[limit + 1];
+            var sqrt = (ulong)Math.Sqrt(limit);
+
+            for (var x = 1U; x <= sqrt; ++x)
+                for (var y = 1U; y <= sqrt; ++y)
+                {
+                    var x2 = x * x;
+                    var y2 = y * y;
+                    var n = 4 * x2 + y2;
+
+                    if (n <= sqrt && (n % 12 == 1 || n % 12 == 5))
+                        isPrimes[n] = !isPrimes[n];
+
+                    n -= x2;
+                    if (n <= sqrt && n % 12 == 7)
+                        isPrimes[n] = !isPrimes[n];
+
+                    n -= 2 * y2;
+                    if (x > y && n <= sqrt && n % 12 == 1)
+                        isPrimes[n] = !isPrimes[n];
+                }
+
+            for (var n = 5U; n <= sqrt; n += 2)
+                if (isPrimes[n])
+                {
+                    var s = n * n;
+                    for (var k = s; k <= sqrt; k += s)
+                        isPrimes[k] = false;
+                }
+            isPrimes[2] = true;
+            isPrimes[3] = true;
+
+            var result = new List<ulong>();
+            for (var i = 1U; i < limit; ++i)
+            {
+                if (isPrimes[i])
+                    result.Add(i);
+            }
+            return result;
+        }

@@ -1,42 +1,44 @@
-public static List<ulong> GetPrimeNumbersByAtkinSieve(ulong limit)
+public static List<long> GetPrimeNumbersByAtkinSieve(long limit)
         {
             var isPrimes = new bool[limit + 1];
-            var sqrt = (ulong)Math.Sqrt(limit);
+            var sqrt = (long)Math.Sqrt(limit);
 
-            for (var x = 1U; x <= sqrt; ++x)
-                for (var y = 1U; y <= sqrt; ++y)
+            for (var x = 1L; x <= sqrt; ++x)
+                for (var y = 1L; y <= sqrt; ++y)
                 {
                     var x2 = x * x;
                     var y2 = y * y;
                     var n = 4 * x2 + y2;
 
-                    if (n <= sqrt && (n % 12 == 1 || n % 12 == 5))
-                        isPrimes[n] = !isPrimes[n];
+                    if (n <= limit && (n % 12 == 1 || n % 12 == 5))
+                        isPrimes[n] ^= true;
 
                     n -= x2;
-                    if (n <= sqrt && n % 12 == 7)
-                        isPrimes[n] = !isPrimes[n];
+                    if (n <= limit && n % 12 == 7)
+                        isPrimes[n] ^= true;
 
                     n -= 2 * y2;
-                    if (x > y && n <= sqrt && n % 12 == 1)
-                        isPrimes[n] = !isPrimes[n];
+                    if (x > y && n <= limit && n % 12 == 1)
+                        isPrimes[n] ^= true;
                 }
 
-            for (var n = 5U; n <= sqrt; n += 2)
+            for (var n = 5L; n <= sqrt; n += 2)
                 if (isPrimes[n])
                 {
                     var s = n * n;
-                    for (var k = s; k <= sqrt; k += s)
+                    for (var k = s; k <= limit; k += s)
                         isPrimes[k] = false;
                 }
+
             isPrimes[2] = true;
             isPrimes[3] = true;
 
-            var result = new List<ulong>();
-            for (var i = 1U; i < limit; ++i)
+            var result = new List<long>();
+            for (var i = 1L; i < limit; ++i)
             {
                 if (isPrimes[i])
                     result.Add(i);
             }
+
             return result;
         }
